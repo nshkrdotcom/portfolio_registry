@@ -40,8 +40,15 @@ neither is evidence about the other.
 
 - A repository present on the remote and absent from the catalog is drift. It is
   either registered or given a `disposition` that says why it is not tracked.
-- A repository in the catalog and absent from disk is ordinary. Operations
-  report it as unbound and continue.
+- A repository in the catalog and absent from disk is a catalog entry the
+  operator has not checked out. The catalog is complete without it, and the
+  entry is not drift. **The tooling does not yet operate around it:** binding
+  stops at the first absent checkout, so every command that binds — `doctor`,
+  `inventory`, `plan`, `run` — fails until the checkout exists or a binding
+  entry points at it. Sparse binding, which classifies each repository as
+  bound, absent, or invalid and continues past an absent one, is the next unit
+  of work in Mix Workspace Ops. Do not write an operation against the
+  behaviour until it lands.
 - A checkout on disk that matches no catalog row and no operator ignore entry is
   drift, and the drift gate fails on it.
 
