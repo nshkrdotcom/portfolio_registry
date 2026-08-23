@@ -13,44 +13,69 @@
 
 # Portfolio Registry
 
-Canonical machine-readable identities, classifications, views, and operational
-profiles for the complete `nshkrdotcom` portfolio.
+Machine-readable identities, classifications, dependency sources, views, and
+release ordering for the complete `nshkrdotcom` portfolio.
 
 This repository is data, not build machinery. It has no `mix.exs`, executable,
-runtime dependency, dependency-edge policy, package-version policy, or Hex
-release. Generic consumers such as Mix Workspace Ops load it explicitly and bind
-its portable GitHub identities to operator-owned checkouts.
+runtime dependency, or Hex release. Generic consumers such as Mix Workspace Ops
+load it explicitly, validate it from outside, and bind its portable GitHub
+identities to operator-owned checkouts.
 
-The 2026-08-11 zero-default baseline records 162 repositories and 695 Mix
-projects. Of those, 688 have unique application identities and seven are valid
-non-application workspace roots. The NSHKR view selects 416 projects from 43
-classified repositories; the global view selects all 695. Ambiguous projects
-remain dated evidence instead of receiving guessed identities.
+## The unit is a repository
+
+A repository is the unit of the catalog, whatever it is written in. Every
+repository carries its remote identity, languages, lifecycle, disposition,
+visibility, roles, groups, and agent scope. Mix projects are an optional block
+inside a repository record, so a repository that builds nothing with Mix is a
+complete row that views select and operations act on.
+
+Repositories that consume cross-repository applications also carry the table
+that says how each one resolves, and the packages they publish as one release
+train.
+
+The catalog records **180 repositories** across five toolchains. 724 Mix
+projects appear inside the repositories that build with Mix; 715 applications
+are provided across them, two of them by more than one project. Fourteen groups
+partition and overlap the portfolio; every repository carries at least one, and
+none carries them all.
 
 ## Authority
 
-The registry owns only:
+The catalog owns:
 
-- stable repository and Mix-project identities;
-- GitHub coordinates and relative project paths;
-- application identity used to map current Mix dependencies, when the project
-  is an application;
-- project classification tags and operational-profile references;
-- named views over the one global inventory;
+- stable repository identity, remote coordinate, and default branch;
+- classification: languages, lifecycle, disposition, visibility, roles, groups,
+  agent scope;
+- optional Mix project identity, path, kind, and the applications each provides;
+- how each consumed application resolves — candidate sources, order, publish
+  order, Mix options, and provider selection where more than one project
+  provides it;
+- which packages publish as one train, and the ordering edges derivation cannot
+  see;
+- named views over the one inventory;
 - dated drift and migration evidence.
 
 Each project's `mix.exs` remains authoritative for dependencies, requirements,
-version, and package contents. Projected poncho packages keep their projection
-metadata in their owning repository. The registry never duplicates either.
+version, and package contents. The catalog holds a resolution table, never a
+dependency list.
+
+The catalog holds portable remote facts only. It carries no absolute path, no
+relative sibling path, no operator directory name, no credential, and no
+executable code. A repository checked out somewhere unconventional is bound
+through an operator-owned, machine-local binding file that is never committed
+here.
 
 ## Layout
 
-- `registry.json` — one canonical row per repository and Mix project.
-- `views/all.json` — the entire resolved registry.
-- `views/nshkr.json` — a tag-selected NSHKR platform subset, not a copied list.
-- `profiles/operator_profiles.json` — shared operational classifications.
-- `snapshots/` — dated observations and unresolved identities; evidence only.
-- `guides/` — protocol, view, and drift rules.
+- `registry.json` — `portfolio_registry.registry/v2`; one row per repository.
+- `views/all.json` — every repository.
+- `views/nshkr.json` — the NSHKR platform, selected by group.
+- `views/dependency_sources.json` — repositories carrying an installed
+  dependency-source helper.
+- `views/release_train.json` — repositories publishing as one release train.
+- `views/python.json` — repositories carrying a Python toolchain.
+- `snapshots/` — dated observations and migration receipts; evidence only.
+- `guides/` — contract, view, and drift rules.
 
 ## Validate and bind
 
@@ -64,21 +89,25 @@ mix_workspace_ops registry select \
   --registry /path/to/portfolio_registry/registry.json \
   --view /path/to/portfolio_registry/views/nshkr.json
 
+mix_workspace_ops registry chain \
+  --registry /path/to/portfolio_registry/registry.json \
+  --package cli_subprocess_core
+
 mix_workspace_ops doctor \
   --registry /path/to/portfolio_registry/registry.json \
   --checkout-root /path/to/operator/checkouts
 ```
 
-Bindings are machine-local and untracked. A normal checkout uses the repository
-basename under the supplied checkout root. Exceptional layouts require an
-explicit operator-owned binding file; they are never encoded in this registry.
+Bindings are machine-local and untracked. A normal checkout uses the
+repository's remote name under the supplied checkout root; anything else needs
+an explicit operator-owned binding file.
 
-The initial snapshot records the portable migration surface for 51 copied
-dependency-source helpers and 50 adjacent configs across 41 canonical
-repositories. It stores repository identities, relative paths, commits, status,
-and content digests—never checkout paths, credentials, or dependency policy.
-The zero-default baseline snapshot records the later example-project and
-non-application-root reconciliation without rewriting that initial evidence.
+## Schema versions
+
+`portfolio_registry.registry/v2` and `portfolio_registry.view/v2` are current.
+`mix_workspace_ops.registry/v1` and `mix_workspace_ops.view/v1` still load and
+are normalized onto the same records. Acceptance of the v1 schemas is scheduled
+to be removed after **2027-02-23**.
 
 See [Registry contract](guides/registry_contract.md),
 [Views](guides/views.md), and
