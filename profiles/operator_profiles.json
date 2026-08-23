@@ -1,5 +1,5 @@
 {
-  "schema": "elixir_ecosystem_registry.profiles/v1",
+  "schema": "portfolio_registry.profiles/v1",
   "profiles": [
     {
       "id": "default",

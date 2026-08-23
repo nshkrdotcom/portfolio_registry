@@ -1,5 +1,5 @@
 {
-  "schema": "elixir_ecosystem_registry.baseline/v1",
+  "schema": "portfolio_registry.baseline/v1",
   "observed_on": "2026-08-11",
   "registry_sha256": "7e4831b207fc9b0c2c87d672e188c581ab24b0bd6d03977cd7b2cec94fab84a8",
   "canonical": {

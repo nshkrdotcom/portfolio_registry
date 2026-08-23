@@ -1,7 +1,7 @@
 {
   "schema": "mix_workspace_ops.view/v1",
   "id": "all",
-  "description": "Every resolved project in the canonical Elixir ecosystem registry.",
+  "description": "Every resolved project in the canonical portfolio registry.",
   "selector": {
     "tags_any": ["ecosystem"],
     "tags_all": [],

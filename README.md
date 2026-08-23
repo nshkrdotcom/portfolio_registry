@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="assets/elixir_ecosystem_registry.svg" width="200" alt="Elixir Ecosystem Registry logo" />
+  <img src="assets/portfolio_registry.svg" width="200" alt="Portfolio Registry logo" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/nshkrdotcom/elixir_ecosystem_registry">
-    <img alt="GitHub: nshkrdotcom/elixir_ecosystem_registry" src="https://img.shields.io/badge/GitHub-nshkrdotcom%2Felixir__ecosystem__registry-0b0f14?logo=github" />
+  <a href="https://github.com/nshkrdotcom/portfolio_registry">
+    <img alt="GitHub: nshkrdotcom/portfolio_registry" src="https://img.shields.io/badge/GitHub-nshkrdotcom%2Fportfolio__registry-0b0f14?logo=github" />
   </a>
-  <a href="https://github.com/nshkrdotcom/elixir_ecosystem_registry/blob/main/LICENSE">
+  <a href="https://github.com/nshkrdotcom/portfolio_registry/blob/main/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0b0f14.svg" />
   </a>
 </p>
 
-# Elixir Ecosystem Registry
+# Portfolio Registry
 
 Canonical machine-readable identities, classifications, views, and operational
 profiles for the complete `nshkrdotcom` Elixir ecosystem.
@@ -58,14 +58,14 @@ Build Mix Workspace Ops from its independent source repository, then run:
 
 ```bash
 mix_workspace_ops registry validate \
-  --registry /path/to/elixir_ecosystem_registry/registry.json
+  --registry /path/to/portfolio_registry/registry.json
 
 mix_workspace_ops registry select \
-  --registry /path/to/elixir_ecosystem_registry/registry.json \
-  --view /path/to/elixir_ecosystem_registry/views/nshkr.json
+  --registry /path/to/portfolio_registry/registry.json \
+  --view /path/to/portfolio_registry/views/nshkr.json
 
 mix_workspace_ops doctor \
-  --registry /path/to/elixir_ecosystem_registry/registry.json \
+  --registry /path/to/portfolio_registry/registry.json \
   --checkout-root /path/to/operator/checkouts
 ```
 
