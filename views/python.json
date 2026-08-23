@@ -1,0 +1,8 @@
+{
+  "schema": "portfolio_registry.view/v2",
+  "id": "python",
+  "description": "Repositories carrying a Python toolchain, whether or not they also build with Mix.",
+  "selector": {
+    "languages": ["python"]
+  }
+}

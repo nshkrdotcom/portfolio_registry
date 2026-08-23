@@ -1,0 +1,9 @@
+{
+  "schema": "portfolio_registry.view/v2",
+  "id": "release_train",
+  "description": "The repositories providing the packages that publish as one train.",
+  "selector": {
+    "groups_any": ["release.train.core"],
+    "lifecycles": ["active"]
+  }
+}

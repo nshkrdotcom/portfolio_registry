@@ -1,11 +1,6 @@
 {
-  "schema": "mix_workspace_ops.view/v1",
+  "schema": "portfolio_registry.view/v2",
   "id": "all",
-  "description": "Every resolved project in the canonical portfolio registry.",
-  "selector": {
-    "tags_any": ["ecosystem"],
-    "tags_all": [],
-    "project_ids": [],
-    "exclude_project_ids": []
-  }
+  "description": "Every repository in the portfolio, whatever it is written in.",
+  "selector": {}
 }
