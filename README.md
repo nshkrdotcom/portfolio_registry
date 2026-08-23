@@ -14,7 +14,7 @@
 # Portfolio Registry
 
 Canonical machine-readable identities, classifications, views, and operational
-profiles for the complete `nshkrdotcom` Elixir ecosystem.
+profiles for the complete `nshkrdotcom` portfolio.
 
 This repository is data, not build machinery. It has no `mix.exs`, executable,
 runtime dependency, dependency-edge policy, package-version policy, or Hex
