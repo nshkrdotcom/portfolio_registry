@@ -65,6 +65,36 @@ executable code. A repository checked out somewhere unconventional is bound
 through an operator-owned, machine-local binding file that is never committed
 here.
 
+## The document
+
+`registry.json` has two keys: the schema identifier and the list of repository
+records. Nothing else is accepted at the top level.
+
+```json
+{
+  "schema": "portfolio_registry.registry/v2",
+  "repositories": [
+    {
+      "id": "shape_analysis",
+      "github": "example-org/shape-analysis",
+      "default_branch": "main",
+      "languages": ["python"],
+      "lifecycle": "active",
+      "disposition": "tracked",
+      "visibility": "public",
+      "roles": ["library"],
+      "groups": ["estate.example", "family.analysis"],
+      "agent_scope": "eligible"
+    }
+  ]
+}
+```
+
+A view document is the same shape with a different envelope; see
+[Views](guides/views.md). The full field vocabulary, the optional `mix` block,
+dependency sources, and the release chain are in
+[Registry contract](guides/registry_contract.md).
+
 ## Layout
 
 - `registry.json` — `portfolio_registry.registry/v2`; one row per repository.
@@ -88,6 +118,9 @@ mix_workspace_ops registry validate \
 mix_workspace_ops registry select \
   --registry /path/to/portfolio_registry/registry.json \
   --view /path/to/portfolio_registry/views/nshkr.json
+
+mix_workspace_ops registry workspace \
+  --registry /path/to/portfolio_registry/registry.json
 
 mix_workspace_ops registry chain \
   --registry /path/to/portfolio_registry/registry.json \

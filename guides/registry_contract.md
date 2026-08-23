@@ -10,6 +10,36 @@ site — is a complete catalog row with no `mix` block at all.
 `mix_workspace_ops.registry/v1` still loads for one minor series of Mix
 Workspace Ops. See [Schema versions](#schema-versions).
 
+## The document
+
+The document has exactly two keys and no others. `schema` names the version;
+`repositories` is the list of repository records. A document carrying any
+further key is refused, so a field added at the top level is a mistake caught
+at validation rather than data silently ignored.
+
+```json
+{
+  "schema": "portfolio_registry.registry/v2",
+  "repositories": [
+    {
+      "id": "shape_analysis",
+      "github": "example-org/shape-analysis",
+      "default_branch": "main",
+      "languages": ["python"],
+      "lifecycle": "active",
+      "disposition": "tracked",
+      "visibility": "public",
+      "roles": ["library"],
+      "groups": ["estate.example", "family.analysis"],
+      "agent_scope": "eligible"
+    }
+  ]
+}
+```
+
+That document is complete and valid. Everything below describes what a
+repository record may carry beyond the required fields.
+
 ## A repository record
 
 Every repository carries these fields. None is optional.
@@ -110,14 +140,32 @@ derive from, and records members only as exceptions.
 "workspace": { "kind": "blitz" }
 ```
 
-| `kind` | Derived from |
-|---|---|
-| `umbrella` | `apps_path` in the root project plus the directory listing. The umbrella root is a container, not a member |
-| `blitz` | the project globs in the root project's `blitz_workspace` metadata. The root is a member when the globs include it |
+`kind` is `umbrella` or `blitz`. It names the mechanism the repository builds
+with; it does not change how membership derives.
 
-`include_project_ids` and `exclude_project_ids` are for the cases derivation
-gets wrong, and are normally absent. A repository whose projects are unrelated
-omits `workspace` entirely.
+Derivation reads the project metadata in the record itself, and applies one
+rule to both kinds:
+
+- the project of kind `workspace_root` is the container the workspace is rooted
+  at, not a member of it;
+- a project of kind `generated` is build output, so it is never a member and
+  cannot be made one;
+- every other project in the repository is a member.
+
+`include_project_ids` and `exclude_project_ids` are the exceptions. The common
+one is a Blitz root whose own project globs name `"."`, so the root builds as
+part of its own workspace; derivation cannot read those globs, so the record
+says so:
+
+```json
+"workspace": { "kind": "blitz", "include_project_ids": ["shape.shape_workspace"] }
+```
+
+A Mix umbrella never needs it: an umbrella root is a container by definition. A
+repository whose projects are unrelated omits `workspace` entirely.
+
+`mix_workspace_ops registry workspace --registry registry.json` reports the
+derived members of every workspace, and `--repository ID` reports one.
 
 ## Dependency sources
 
