@@ -1,0 +1,299 @@
+{
+  "added_repositories": {
+    "crucible": "eleven North-Shore-AI repositories providing applications six catalogued repositories declare",
+    "gemini_cli_sdk": "provider of an application trinity_coordinator declares",
+    "jido_ai": "provider of an application jido_hive declares",
+    "jido_harness": "provider of an application jido_hive declares",
+    "jido_shell": "provider of an application jido_hive declares",
+    "jido_signal": "provider of an application jido_hive declares",
+    "jido_vfs": "provider of an application jido_hive declares",
+    "soul_eq": "the only helper-carrying repository absent from the catalog; its helper is installed at atrillion_intent, not the repository root"
+  },
+  "carried_forward": [
+    {
+      "item": "contained evaluation of a root mix.exs to derive Blitz workspace membership from its project globs",
+      "phase": "P3"
+    },
+    {
+      "item": "four catalogued repositories have no reachable remote: cl_ex, handoff, lumainus, vet_sidekick_ex",
+      "phase": "P8"
+    },
+    {
+      "item": "the operator-local ignore ledger and the binding entries the twelve out-of-root repositories need",
+      "phase": "P8"
+    },
+    {
+      "item": "publish_order may name a non-hex source; plan section 6.2 as written would break the twenty-seven declarations that do",
+      "phase": "P2"
+    }
+  ],
+  "counts": {
+    "dependency_source_entries": 556,
+    "dependency_source_tables": 39,
+    "groups": 14,
+    "identity_loss": 0,
+    "languages": [
+      "elixir",
+      "go",
+      "javascript",
+      "python",
+      "rust"
+    ],
+    "projects": {
+      "after": 724,
+      "before": 695
+    },
+    "release_packages": 12,
+    "repositories": {
+      "after": 180,
+      "before": 162
+    },
+    "repositories_added": 18
+  },
+  "declaration_migration": {
+    "dead_declared_paths": [
+      {
+        "application": "jido_ai",
+        "config_repository": "jido_hive"
+      },
+      {
+        "application": "jido_harness",
+        "config_repository": "jido_hive"
+      },
+      {
+        "application": "jido_shell",
+        "config_repository": "jido_hive"
+      },
+      {
+        "application": "jido_vfs",
+        "config_repository": "jido_hive"
+      },
+      {
+        "application": "crucible_provider_contracts",
+        "config_repository": "jido_integration"
+      },
+      {
+        "application": "crucible_signal",
+        "config_repository": "jido_integration"
+      },
+      {
+        "application": "crucible_signal_trace",
+        "config_repository": "jido_integration"
+      },
+      {
+        "application": "crucible_tap",
+        "config_repository": "jido_integration"
+      },
+      {
+        "application": "crucible_policy",
+        "config_repository": "stack_lab"
+      },
+      {
+        "application": "crucible_provider_contracts",
+        "config_repository": "stack_lab"
+      },
+      {
+        "application": "crucible_signal",
+        "config_repository": "stack_lab"
+      },
+      {
+        "application": "crucible_signal_trace",
+        "config_repository": "stack_lab"
+      },
+      {
+        "application": "crucible_tap",
+        "config_repository": "stack_lab"
+      }
+    ],
+    "declarations": 564,
+    "operator_binding_required": [
+      "crucible_bumblebee",
+      "crucible_factorization",
+      "crucible_mechinterp",
+      "crucible_model_registry",
+      "crucible_policy",
+      "crucible_provider_contracts",
+      "crucible_safetensors",
+      "crucible_signal",
+      "crucible_signal_trace",
+      "crucible_tap",
+      "crucible_tensor_patch",
+      "jido_signal"
+    ],
+    "path_reconstruction": {
+      "mismatch": 13,
+      "no_local_source": 29,
+      "reconstructed": 502,
+      "reconstructed_with_operator_binding": 20
+    },
+    "path_reconstruction_key": {
+      "mismatch": "the declared path names a directory absent from the operator's machine, so the helper falls through to the github source; catalog identity reconstructs the live checkout of the same repository instead",
+      "no_local_source": "the declaration's order omits local, so it never resolved from a sibling path",
+      "reconstructed": "the declared sibling path equals the provider project path joined to the conventional checkout of its repository",
+      "reconstructed_with_operator_binding": "equal once the operator's machine-local binding names that repository's checkout, which lies outside the conventional root"
+    },
+    "reproduced_exactly": 564
+  },
+  "from_schema": "mix_workspace_ops.registry/v1",
+  "intra_repository_merge_conflicts": [
+    {
+      "application": "aitrace",
+      "config": "AITrace/core/replay_engine/build_support/dependency_sources.config.exs",
+      "project_entry": {
+        "github": {
+          "branch": "main",
+          "repo": "nshkrdotcom/AITrace"
+        },
+        "hex": "~> 0.1.0"
+      },
+      "repository": "aitrace",
+      "repository_entry": {
+        "github": {
+          "branch": "main",
+          "repo": "nshkrdotcom/AITrace"
+        },
+        "hex": "~> 0.2.0"
+      }
+    }
+  ],
+  "live_inventory": {
+    "dependency_declarations": 564,
+    "distinct_declared_applications": 253,
+    "helper_carrying_repositories": 42,
+    "installed_config_files": 52,
+    "installed_helper_files": 52,
+    "observed_on": "2026-08-23",
+    "supersedes": {
+      "dependency_declarations": 561,
+      "distinct_declared_applications": 114,
+      "helper_carrying_repositories": 40,
+      "installed_helper_files": 51,
+      "source": "IMPLEMENTATION_PLAN.md section 1.3, observed 2026-08-11"
+    }
+  },
+  "observed_on": "2026-08-23",
+  "registry_sha256": {
+    "after": "9014bfdb3fe2e3c4e15844abae757b69bda24e2cc3cc6ed685da87beec73afe4",
+    "before": "7e4831b207fc9b0c2c87d672e188c581ab24b0bd6d03977cd7b2cec94fab84a8"
+  },
+  "release_chain": {
+    "derived_prerequisites_match_helper_dag": true,
+    "detail": "every cross-repository edge is derived from the dependency declarations; the two intra-repository edges inside execution_plane are declared, because a repository-scoped dependency table does not attribute an entry to a project. The full-train order differs from the helper's only in where the two independent packages gemini_ex and inference fall, which no edge constrains.",
+    "explicit_edges": {
+      "execution_plane": [
+        "execution_plane_jsonrpc",
+        "execution_plane_process"
+      ]
+    }
+  },
+  "resolved_disagreements": [
+    {
+      "application": "aitrace",
+      "detail": "the repository config requires ~> 0.2.0 and core/replay_engine requires ~> 0.1.0",
+      "kind": "intra_repository_requirement",
+      "repository": "aitrace",
+      "resolution": "both kept: the repository table carries ~> 0.2.0 and the replay-engine project carries its own entry with ~> 0.1.0, so each emits the tuple it emitted before"
+    },
+    {
+      "applications": [
+        "jido_integration_contracts",
+        "jido_integration_provider_classification",
+        "jido_integration_v2",
+        "jido_integration_v2_asm_runtime_bridge",
+        "jido_integration_v2_github"
+      ],
+      "detail": "some consumers name agentjido/jido_integration and others nshkrdotcom/jido_integration; both remotes exist",
+      "kind": "github_coordinate",
+      "resolution": "the github coordinate is a per-consumer fact and is migrated verbatim; local resolution is identical for every consumer because all of them derive it from the catalogued nshkrdotcom/jido_integration provider, which is the origin of the operator's checkout"
+    },
+    {
+      "applications": [
+        "crucible_policy",
+        "crucible_provider_contracts",
+        "crucible_signal",
+        "crucible_signal_trace",
+        "crucible_tap"
+      ],
+      "detail": "stack_lab and jido_integration declared a sibling directory that does not exist; trinity_framework and self_hosted_inference_core declared the one that does",
+      "kind": "sibling_path",
+      "resolution": "paths leave the catalog entirely; every consumer now derives local resolution from the catalogued North-Shore-AI repository, which is where the checkout actually is"
+    },
+    {
+      "applications": [
+        "jido_ai",
+        "jido_signal"
+      ],
+      "detail": "each application is provided both by a standalone repository and by a vendored copy inside priv_projs",
+      "kind": "provider_ambiguity",
+      "resolution": "jido_hive names the standalone project as its provider, matching the origin of the checkout its declared path resolved to"
+    },
+    {
+      "detail": "soul_eq/atrillion_intent (helper version 5) omits the antigravity_cli_sdk and amp_sdk edges; stack_coder/apps/stack_coder (helper version 1) carries no release DAG at all",
+      "kind": "release_dag_drift",
+      "resolution": "the twelve-key DAG carried by the other helper variants is canonical; the two omissions are staleness in stale copies, not disagreement, and the migrated catalog reproduces the twelve-key DAG exactly"
+    }
+  ],
+  "retired_vocabulary": {
+    "project_profiles": "one profile, default, applied to all 695 projects and referenced by no operation; profiles/operator_profiles.json is removed",
+    "project_tags": {
+      "canonical": "carried by all 695 projects; no operation could target it",
+      "deferred": "replaced by repository lifecycle",
+      "ecosystem": "carried by all 695 projects; no operation could target it",
+      "pilot": "replaced by the release.train.core group and the rollout wave record",
+      "platform.nshkr": "promoted to a repository group",
+      "tooling.generic": "replaced by the repository role vocabulary"
+    }
+  },
+  "schema": "portfolio_registry.migration/v1",
+  "to_schema": "portfolio_registry.registry/v2",
+  "uncatalogued_applications": [
+    {
+      "applications": [
+        "crucible_bumblebee",
+        "crucible_factorization",
+        "crucible_mechinterp",
+        "crucible_model_registry",
+        "crucible_policy",
+        "crucible_provider_contracts",
+        "crucible_safetensors",
+        "crucible_signal",
+        "crucible_signal_trace",
+        "crucible_tap",
+        "crucible_tensor_patch"
+      ],
+      "detail": "real North-Shore-AI repositories; each is now a catalogued repository with one standalone project",
+      "disposition": "catalogued"
+    },
+    {
+      "applications": [
+        "gemini_cli_sdk"
+      ],
+      "detail": "nshkrdotcom/gemini_cli_sdk exists and is archived on the remote; catalogued with lifecycle and disposition archived",
+      "disposition": "catalogued"
+    },
+    {
+      "applications": [
+        "jido_harness",
+        "jido_shell",
+        "jido_vfs"
+      ],
+      "detail": "real nshkrdotcom repositories checked out outside the conventional root; catalogued, with the checkout location left to the operator binding",
+      "disposition": "catalogued"
+    },
+    {
+      "applications": [
+        "req_llm",
+        "splode"
+      ],
+      "detail": "third-party Hex packages; the declaration's order is hex alone, so no provider is needed",
+      "disposition": "declared_without_local"
+    },
+    {
+      "applications": [
+        "sprites"
+      ],
+      "detail": "mikehostetler/sprites-ex has no Hex release; the declaration's order is github alone",
+      "disposition": "declared_without_local"
+    }
+  ]
+}
