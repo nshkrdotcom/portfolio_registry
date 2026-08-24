@@ -10,6 +10,13 @@ site — is a complete catalog row with no `mix` block at all.
 `mix_workspace_ops.registry/v1` still loads for one minor series of Mix
 Workspace Ops. See [Schema versions](#schema-versions).
 
+**Every example below is checked.** A block with a `schema` key is a whole
+document and is valid as it stands. Every other block is a repository record
+keyed by `id`, carrying the fields its passage is about; together they assemble
+into one document, and `mix_workspace_ops registry examples --guide
+guides/registry_contract.md` refuses the guide if that document does not
+validate. An example that could not be catalogued is a defect in the guide.
+
 ## The document
 
 The document has exactly two keys and no others. `schema` names the version;
@@ -70,7 +77,8 @@ Every repository carries at least one group, and no group is carried by every
 repository. A group that selects everything selects nothing useful, and the
 validator refuses one.
 
-A minimal non-Elixir record is complete as it stands:
+The record inside that document is complete as it stands, and it builds nothing
+with Mix:
 
 ```json
 {
@@ -90,14 +98,35 @@ A minimal non-Elixir record is complete as it stands:
 ## The optional `mix` block
 
 A repository that builds with Mix adds a `mix` block listing its projects, and a
-`workspace` entry when its projects form one workspace.
+`workspace` entry when its projects form one workspace. `shape` is the running
+example from here on:
 
 ```json
-"mix": {
-  "projects": [
-    { "id": "shape_runtime", "app": "shape_runtime", "path": ".",
-      "kind": "standalone", "provides": ["shape_runtime"] }
-  ]
+{
+  "id": "shape",
+  "github": "example-org/shape",
+  "default_branch": "main",
+  "languages": ["elixir"],
+  "lifecycle": "active",
+  "disposition": "tracked",
+  "visibility": "public",
+  "roles": ["library"],
+  "groups": ["family.shape"],
+  "agent_scope": "eligible",
+  "mix": {
+    "projects": [
+      { "id": "shape.shape_workspace", "app": null, "path": ".",
+        "kind": "workspace_root" },
+      { "id": "shape.shape_runtime", "app": "shape_runtime",
+        "path": "core/shape_runtime", "kind": "package" },
+      { "id": "shape.shape_rpc", "app": "shape_rpc",
+        "path": "protocols/shape_rpc", "kind": "package" },
+      { "id": "shape.vendored_shape_core", "app": "shape_core",
+        "path": "vendor/shape_core", "kind": "package" },
+      { "id": "shape.shape_consumer", "app": "shape_consumer",
+        "path": "packaging/consumer", "kind": "generated" }
+    ]
+  }
 }
 ```
 
@@ -112,9 +141,10 @@ A project record:
 | `provides` | Applications this project supplies for dependency resolution. Defaults to `[app]`; must contain `app` when `app` is not `null` |
 
 `generated` marks a Mix project that is build output rather than source — a
-projected consumer tree, for instance. Nothing derives workspace membership or
-seeds a dependency closure from a generated project. Derivation cannot tell that
-a directory is generated, so the catalog says so.
+projected consumer tree, for instance, as `shape.shape_consumer` is. Nothing
+derives workspace membership or seeds a dependency closure from a generated
+project. Derivation cannot tell that a directory is generated, so the catalog
+says so.
 
 Real Mix projects beneath `examples/` are inventory, not noise. Their presence
 does not turn a standalone root into a workspace or change any stable id.
@@ -123,8 +153,31 @@ does not turn a standalone root into a workspace or change any stable id.
 
 `provides` states identity. It is entirely normal for more than one project to
 provide one application: a fork, an example, a successor, a copy vendored into a
-monorepo. The catalog records all of them.
+monorepo. The catalog records all of them. `shape.vendored_shape_core` above is
+a vendored copy of an application another repository also provides:
 
+```json
+{
+  "id": "shape_core",
+  "github": "example-org/shape-core",
+  "default_branch": "main",
+  "languages": ["elixir"],
+  "lifecycle": "active",
+  "disposition": "tracked",
+  "visibility": "public",
+  "roles": ["library"],
+  "groups": ["family.core"],
+  "agent_scope": "eligible",
+  "mix": {
+    "projects": [
+      { "id": "shape_core.shape_core", "app": "shape_core",
+        "path": "core/shape_core", "kind": "package" }
+    ]
+  }
+}
+```
+
+Two projects now provide `shape_core`, and that is legal identity, not an error.
 Choosing between them is a separate act, and it belongs to the dependency
 declaration that needs one. Where several projects provide an application and a
 declaration could resolve it locally, the declaration names a `provider`.
@@ -137,7 +190,10 @@ Membership has one authority: derivation. The catalog says which mechanism to
 derive from, and records members only as exceptions.
 
 ```json
-"workspace": { "kind": "blitz" }
+{
+  "id": "shape",
+  "mix": { "workspace": { "kind": "blitz" } }
+}
 ```
 
 `kind` is `umbrella` or `blitz`. It names the mechanism the repository builds
@@ -158,7 +214,15 @@ part of its own workspace; derivation cannot read those globs, so the record
 says so:
 
 ```json
-"workspace": { "kind": "blitz", "include_project_ids": ["shape.shape_workspace"] }
+{
+  "id": "shape",
+  "mix": {
+    "workspace": {
+      "kind": "blitz",
+      "include_project_ids": ["shape.shape_workspace"]
+    }
+  }
+}
 ```
 
 A Mix umbrella never needs it: an umbrella root is a container by definition. A
@@ -175,20 +239,20 @@ authority for which dependencies exist and what versions they require. An entry
 for an application a project does not declare is simply never used.
 
 ```json
-"dependency_sources": {
-  "shape_core": {
-    "github": { "repo": "example-org/shape-core", "subdir": "core/shape_core" },
-    "hex": "~> 0.2.0"
-  },
-  "sprite": {
-    "github": { "repo": "other-org/sprite-ex", "branch": "main" },
-    "order": ["local", "github"],
-    "publish_order": ["github"]
-  },
-  "vendored_signal": {
-    "hex": "~> 0.1.0",
-    "provider": "monorepo.vendored_signal",
-    "opts": { "override": true }
+{
+  "id": "shape",
+  "dependency_sources": {
+    "shape_core": {
+      "github": { "repo": "example-org/shape-core", "subdir": "core/shape_core" },
+      "hex": "~> 0.2.0",
+      "provider": "shape_core.shape_core",
+      "opts": { "override": true }
+    },
+    "sprite": {
+      "github": { "repo": "other-org/sprite-ex", "branch": "main" },
+      "order": ["github"],
+      "publish_order": ["github"]
+    }
   }
 }
 ```
@@ -201,6 +265,13 @@ for an application a project does not declare is simply never used.
 | `publish_order` | Sources tried while publishing. Omitted in the common case, when it is `["hex"]` |
 | `provider` | Project id supplying the application, where more than one does |
 | `opts` | Mix dependency options merged into the emitted tuple: `override`, `runtime`, `optional`, `only`, `targets` |
+
+Both entries in that table show the rule the section turns on. `shape_core`
+inherits the default order, which reaches `local`, so it must name which of the
+two projects providing `shape_core` it resolves through — and `subdir` is that
+project's own path inside its repository. `sprite` is a third-party application
+no catalog project provides, so its order omits `local` rather than pointing at
+a provider that does not exist.
 
 **`local` carries no path.** It resolves to the provider project's `path` inside
 the operator's checkout of that project's repository. That is the whole reason
@@ -229,9 +300,12 @@ repository can require a different version of something than its siblings.
 and the prerequisite edges derivation cannot see.
 
 ```json
-"release_chain": {
-  "shape_core": [],
-  "shape_rpc": ["shape_core"]
+{
+  "id": "shape",
+  "release_chain": {
+    "shape_runtime": [],
+    "shape_rpc": ["shape_runtime"]
+  }
 }
 ```
 
@@ -239,8 +313,8 @@ A package with an entry is in the train; the value lists prerequisites beyond
 the derived ones. Derivation supplies every cross-repository edge from the
 dependency-source tables. It cannot supply an edge between two packages of the
 same repository, because a repository-scoped table does not say which project
-consumes an entry — so that edge is declared, or the consuming project declares
-its own table and restores the attribution.
+consumes an entry — so that edge is declared, as `shape_rpc`'s is above, or the
+consuming project declares its own table and restores the attribution.
 
 Empty lists are meaningful: they put a package in the train with no prerequisite
 of its own.
