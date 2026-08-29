@@ -139,6 +139,8 @@ A project record:
 | `path` | Repository-relative path. Never absolute, never escaping the repository, never entering `.git`, `deps`, `_build`, or operator state |
 | `kind` | `standalone`, `workspace_root`, `package`, `tooling`, or `generated` |
 | `provides` | Applications this project supplies for dependency resolution. Defaults to `[app]`; must contain `app` when `app` is not `null` |
+| `current` | Optional temporal mark selecting this project when several projects provide the same application; at most one per application |
+| `lineage` | Optional project id this project descends from; documentation only, never read by resolution |
 
 `generated` marks a Mix project that is build output rather than source — a
 projected consumer tree, for instance, as `shape.shape_consumer` is. Nothing
@@ -178,11 +180,16 @@ a vendored copy of an application another repository also provides:
 ```
 
 Two projects now provide `shape_core`, and that is legal identity, not an error.
-Choosing between them is a separate act, and it belongs to the dependency
-declaration that needs one. Where several projects provide an application and a
-declaration could resolve it locally, the declaration names a `provider`.
-Without one the catalog is refused, and the error names every candidate. Nothing
-silently takes the first match.
+Choosing between them is separate and follows one order: a declaration's
+`provider`; a provider in the consumer's own repository; the single provider
+marked `current`; otherwise an error naming every candidate and repository.
+Nothing silently takes the first match.
+
+`current` is temporal and load-bearing: when a successor takes over an
+application name, the mark moves. It is unrelated to repository
+`lifecycle: "active"`, which says only that the repository is alive. `lineage`
+may state that a project descends from another, but it is documentation and
+never changes resolution.
 
 ### Workspace membership
 
@@ -243,7 +250,7 @@ for an application a project does not declare is simply never used.
   "id": "shape",
   "dependency_sources": {
     "shape_core": {
-      "github": { "repo": "example-org/shape-core", "subdir": "core/shape_core" },
+      "github": {},
       "hex": "~> 0.2.0",
       "provider": "shape_core.shape_core",
       "opts": { "override": true }
@@ -259,17 +266,17 @@ for an application a project does not declare is simply never used.
 
 | Field | Meaning |
 |---|---|
-| `github` | `repo`, plus at most one of `branch`, `ref`, `tag`, and an optional `subdir` |
-| `hex` | A Mix version requirement |
+| `github` | `{}` or `true` opts into coordinates derived from provider identity; `repo`, `branch`, `ref`, `tag`, `subdir` carry only deviations |
+| `hex` | A requirement string, or `{ "requirement": "...", "package": "..." }` for a differently named published fork |
 | `order` | Sources tried, in order. Omitted in the common case, when it is `["local", "github", "hex"]` |
 | `publish_order` | Sources tried while publishing. Omitted in the common case, when it is `["hex"]` |
 | `provider` | Project id supplying the application, where more than one does |
 | `opts` | Mix dependency options merged into the emitted tuple: `override`, `runtime`, `optional`, `only`, `targets` |
 
 Both entries in that table show the rule the section turns on. `shape_core`
-inherits the default order, which reaches `local`, so it must name which of the
-two projects providing `shape_core` it resolves through — and `subdir` is that
-project's own path inside its repository. `sprite` is a third-party application
+inherits the default order, names its durable provider deviation, and opts into
+GitHub without restating that provider's repository, branch, or project path.
+`sprite` is a third-party application
 no catalog project provides, so its order omits `local` rather than pointing at
 a provider that does not exist.
 
@@ -289,6 +296,13 @@ write an order that omits `local`.
 
 `opts` are load-bearing. `override: true` decides which version wins a diamond;
 dropping it changes what Mix resolves.
+
+All three sources use one provider identity. Local derives the bound checkout
+and project path. GitHub derives the provider repository, default branch, and
+project path as `subdir`; its block exists to opt in and carries only
+deviations. Hex derives package name from application name and always carries a
+requirement; the map form declares the exceptional package name and is emitted
+through Mix's `hex:` option. The catalog never carries a local path.
 
 A project may carry its own `dependency_sources` block. Its entries replace the
 repository's entry for those applications alone, which is how one project in a
