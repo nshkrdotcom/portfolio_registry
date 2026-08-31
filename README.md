@@ -33,8 +33,8 @@ Repositories that consume cross-repository applications also carry the table
 that says how each one resolves, and the packages they publish as one release
 train.
 
-The catalog records **180 repositories** across five toolchains. 724 Mix
-projects appear inside the repositories that build with Mix; 715 applications
+The catalog records **273 repositories** across fifteen language labels. 726 Mix
+projects appear inside the repositories that build with Mix; 717 applications
 are provided across them, two of them by more than one project. Fourteen groups
 partition and overlap the portfolio; every repository carries at least one, and
 none carries them all.
@@ -61,9 +61,9 @@ dependency list.
 
 The catalog holds portable remote facts only. It carries no absolute path, no
 relative sibling path, no operator directory name, no credential, and no
-executable code. A repository checked out somewhere unconventional is bound
-through an operator-owned, machine-local binding file that is never committed
-here.
+executable code. A repository checked out somewhere unconventional is bound through an
+operator-owned, machine-local ledger that is never committed here. The same strict ledger
+holds exact ignored-checkout observations.
 
 ## The document
 
@@ -126,14 +126,19 @@ mix_workspace_ops registry chain \
   --registry /path/to/portfolio_registry/registry.json \
   --package cli_subprocess_core
 
+mix_workspace_ops registry drift \
+  --registry /path/to/portfolio_registry/registry.json \
+  --checkout-root /path/to/operator/checkouts \
+  --ledger /path/to/operator_ledger.json
+
 mix_workspace_ops doctor \
   --registry /path/to/portfolio_registry/registry.json \
   --checkout-root /path/to/operator/checkouts
 ```
 
-Bindings are machine-local and untracked. A normal checkout uses the
-repository's remote name under the supplied checkout root; anything else needs
-an explicit operator-owned binding file.
+Bindings and exact checkout ignores are machine-local and untracked. A normal checkout
+uses the repository's remote name under the supplied checkout root; anything else needs an
+explicit operator-owned ledger entry.
 
 ## Schema versions
 

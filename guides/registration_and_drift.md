@@ -12,11 +12,10 @@ JavaScript repository is registered on its identity alone and carries no `mix`
 block. Language detection records what a repository carries; it never decides
 whether the repository belongs.
 
-The conventional checkout of a repository is its remote's name under the
-operator's checkout root. A repository checked out elsewhere is bound through
-the operator's binding file. That file is machine-local and is never committed
-here — which is what lets a portfolio spread across several checkout roots stay
-describable by one portable catalog.
+The conventional checkout of a repository is its remote's name under the operator's
+checkout root. A repository checked out elsewhere is bound through the operator's strict
+ledger. That file is machine-local and is never committed here — which is what lets a
+portfolio spread across several checkout roots stay describable by one portable catalog.
 
 ## Mix metadata
 
@@ -42,19 +41,22 @@ neither is evidence about the other.
   either registered or given a `disposition` that says why it is not tracked.
 - A repository in the catalog and absent from disk is a catalog entry the
   operator has not checked out. The catalog is complete without it, and the
-  entry is not drift. **The tooling does not yet operate around it:** binding
-  stops at the first absent checkout, so every command that binds — `doctor`,
-  `inventory`, `plan`, `run` — fails until the checkout exists or a binding
-  entry points at it. Sparse binding, which classifies each repository as
-  bound, absent, or invalid and continues past an absent one, is the next unit
-  of work in Mix Workspace Ops. Do not write an operation against the
-  behaviour until it lands.
+  entry is not drift. Binding records it as absent and continues; an operation
+  fails only when that operation requires the absent repository.
 - A checkout on disk that matches no catalog row and no operator ignore entry is
   drift, and the drift gate fails on it.
 
-The operator ignore ledger is machine-local: worktrees, scratch clones,
-generated checkouts, experiments. Nothing about one operator's disk belongs in
-the catalog, so the ledger never moves here.
+The operator ignore ledger is machine-local: worktrees, scratch clones, generated
+checkouts, experiments. Each row binds an absolute path to its exact observed remotes and
+an operator reason; there are no globs or name-only ignores. A moved path, changed origin or
+missing checkout is stale evidence and fails drift. Nothing about one operator's disk
+belongs in the catalog, so the ledger never moves here.
+
+`mix_workspace_ops registry drift` inventories every direct child regardless of language,
+combines catalog dispositions with that exact ledger, and returns all evidence in stable
+order. `discovered` and `failed` rows make the gate non-zero; `dispositioned`, `ignored`
+and `not_a_repository` rows are explained. Its observation date comes from the command's
+UTC clock.
 
 ## Validation
 
