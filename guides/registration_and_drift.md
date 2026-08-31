@@ -52,6 +52,11 @@ an operator reason; there are no globs or name-only ignores. A moved path, chang
 missing checkout is stale evidence and fails drift. Nothing about one operator's disk
 belongs in the catalog, so the ledger never moves here.
 
+Drift loads the ledger from
+`${XDG_CONFIG_HOME:-~/.config}/mix_workspace_ops/operator_ledger.json` when present. An
+explicit `--ledger` path, the matching environment variable, or operator configuration
+overrides that conventional location.
+
 `mix_workspace_ops registry drift` inventories every direct child regardless of language,
 combines catalog dispositions with that exact ledger, and returns all evidence in stable
 order. `discovered` and `failed` rows make the gate non-zero; `dispositioned`, `ignored`

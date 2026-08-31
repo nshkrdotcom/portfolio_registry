@@ -128,8 +128,7 @@ mix_workspace_ops registry chain \
 
 mix_workspace_ops registry drift \
   --registry /path/to/portfolio_registry/registry.json \
-  --checkout-root /path/to/operator/checkouts \
-  --ledger /path/to/operator_ledger.json
+  --checkout-root /path/to/operator/checkouts
 
 mix_workspace_ops doctor \
   --registry /path/to/portfolio_registry/registry.json \
@@ -138,7 +137,9 @@ mix_workspace_ops doctor \
 
 Bindings and exact checkout ignores are machine-local and untracked. A normal checkout
 uses the repository's remote name under the supplied checkout root; anything else needs an
-explicit operator-owned ledger entry.
+explicit operator-owned ledger entry. Drift loads the conventional
+`${XDG_CONFIG_HOME:-~/.config}/mix_workspace_ops/operator_ledger.json` when present;
+`--ledger` overrides it.
 
 ## Schema versions
 
