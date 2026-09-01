@@ -33,8 +33,8 @@ Repositories that consume cross-repository applications also carry the table
 that says how each one resolves, and the packages they publish as one release
 train.
 
-The catalog records **273 repositories** across fifteen language labels. 726 Mix
-projects appear inside the repositories that build with Mix; 717 applications
+The catalog records **273 repositories** across fifteen language labels. 725 Mix
+projects appear inside the repositories that build with Mix; 716 applications
 are provided across them, two of them by more than one project. Fourteen groups
 partition and overlap the portfolio; every repository carries at least one, and
 none carries them all.
