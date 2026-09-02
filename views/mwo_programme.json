@@ -26,7 +26,6 @@
       "ground_plane",
       "inference",
       "jido_hive",
-      "jido_integration",
       "linear_sdk",
       "llama_cpp_sdk",
       "mezzanine",
@@ -36,14 +35,12 @@
       "prismatic",
       "pristine",
       "prompt_runner_sdk",
-      "reqllm_next",
       "self_hosted_inference_bumblebee",
       "self_hosted_inference_core",
       "stack_coder",
       "stack_lab",
       "switchyard",
       "synapse",
-      "temporalex",
       "trinity_coordinator",
       "trinity_framework"
     ]
